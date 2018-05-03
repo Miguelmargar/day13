@@ -9,19 +9,23 @@ function weather(apiData) {
     document.getElementById("data1").innerHTML = htmlString;
 }
 
-function cityChange() {
-    let location = prompt("Enter Location")
-    return "https://api.openweathermap.org/data/2.5/weather?q="+location+"&APPID=6ebea87dfc131fd5402906ce4b098ab8"
+function submitCity() {
+    city = document.getElementById("cityForm")["city"].value
+    request.open("GET", "https://api.openweathermap.org/data/2.5/weather?q="+city+"&APPID=6ebea87dfc131fd5402906ce4b098ab8");
+        request.send();
 }
-//CHALLENGE IS TO CREATE A FORM THAT PICKS UP THE LOCATION GIVEN WITHIN THE FORM INSTEAD OF A PROMPT request
+
 
 
 request.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
         weather(this.responseText);
+    };
+    if (this.readyState == 4 && this.status == 404) {
+        document.getElementById("data").innerHTML = "<strong>City not found. Please try again</strong>";
     }
-};
+}
 
-request.open("GET", cityChange());
+request.open("GET", submitCity());
 
 request.send();
